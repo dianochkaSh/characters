@@ -1,0 +1,38 @@
+
+import ProductItems from '@/components/ProductItems';
+import { IProduct } from '@/store/products/products.types';
+import {useCallback, useEffect, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { productAction, stateProducts } from '@/store/products/product.slice';
+import { getProducts } from '@/store/products/product.actions';
+import SearchComponent from "@/components/SearchComponent";
+
+const ProductsList = () => {
+  const dispatch = useDispatch()
+  const { products , isLoading, hasError}  = useSelector(stateProducts);
+
+    useEffect(() => {
+      if (products.length == 0) {
+        dispatch(getProducts());
+      }
+    }, [dispatch]);
+  return(
+    <div >
+      <SearchComponent />
+
+      { isLoading ?  (
+            "Loading..."
+      ) : hasError ? (
+        <div> {hasError} </div>
+      ) : (
+        <div className="flex flex-wrap justify-around">
+          {products?.map((product: IProduct) => (
+            <ProductItems key={product.id} productItem={product}/>
+          ))};
+        </div>
+      )
+      }
+    </div>
+  )
+}
+export default ProductsList
