@@ -1,14 +1,14 @@
 
 import ProductItems from '@/components/ProductItems';
 import { IProduct } from '@/store/products/products.types';
-import {useCallback, useEffect, useState} from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { productAction, stateProducts } from '@/store/products/product.slice';
+import { stateProducts } from '@/store/products/product.slice';
 import { getProducts } from '@/store/products/product.actions';
 import SearchComponent from "@/components/SearchComponent";
 
 const ProductsList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
   const { products , isLoading, hasError}  = useSelector(stateProducts);
 
     useEffect(() => {

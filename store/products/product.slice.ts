@@ -3,21 +3,34 @@ import { getProductById, getProducts, searchByName } from "@/store/products/prod
 import { TypeRootState } from "@/store/store";
 import { IProduct } from "@/store/products/products.types";
 
+interface  IInitialState {
+    products: IProduct[],
+    isLoading: boolean,
+    hasError: boolean,
+    oneProduct: IProduct,
+    addProduct: IProduct
+}
+interface IObject {
+    [key: string]: string
+}
 
-const InitialState =  {
+const InitialState:IInitialState =  {
   products: [],
   isLoading: false,
   hasError: false,
   oneProduct: {
-    id: '',
+    id: 0,
     name: 'string',
     image: '',
-    location: {},
+    location: {
+        name: '',
+        url: ''
+    },
     species: '',
     gender: ''
   },
   addProduct: {
-    id: '',
+    id: 0,
     name: '',
     image: '',
     species: '',
@@ -80,9 +93,9 @@ export const productSlice = createSlice({
             state.products.splice(index, 1);
         }
     },
-     changeFormData: (state, action: PayloadAction<Object>) => {
+     changeFormData: (state, action: PayloadAction<IObject>) => {
        const { key, value } = action.payload;
-       state.addProduct[key as keyof typeof state.addProduct] = value;
+       state.addProduct = {...state.addProduct, [key]: value};
      },
       editItem: (state, action:PayloadAction<IProduct>) => {
           const index = state.products.findIndex(item=> item.id === action.payload.id);
@@ -90,9 +103,9 @@ export const productSlice = createSlice({
               state.products[index] = action.payload;
           }
       },
-      handlerFieldEdit: (state, action:PayloadAction<Object>) => {
+      handlerFieldEdit: (state, action:PayloadAction<IObject>) => {
           const { key, value } = action.payload;
-          state.oneProduct[key as keyof typeof state.oneProduct] = value;
+          state.oneProduct = {...state.oneProduct, [key]: value};
       }
 
   }

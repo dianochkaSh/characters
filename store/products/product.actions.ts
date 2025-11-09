@@ -1,39 +1,55 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { IProduct } from "@/store/products/products.types";
+import AxiosXHR = Axios.AxiosXHR;
+interface IProductAxios {
+    info: {
 
-export const getProducts =  createAsyncThunk(
+    },
+    results: IProduct[]
+}
+interface IProductAxiosReject{
+    error: string
+}
+
+export const getProducts =  createAsyncThunk<IProduct[], void, { rejectValue:IProductAxiosReject}>(
     'products',
-    async() => {
+    async():Promise<any> => {
         try {
-            const response = await axios.get(
+            const response:AxiosXHR<IProductAxios> = await axios.get(
                 `https://rickandmortyapi.com/api/character`
             );
-            return response.data.results;
-        } catch (error) {
-            return error;
+            const data: IProduct[] = response.data.results;
+            return data;
+        } catch (error: unknown) {
+            if(error instanceof Error) {
+                return error.message;
+            }
         }
     }
 );
 
-export const getProductById = createAsyncThunk(
+export const getProductById = createAsyncThunk<IProduct, number, { rejectValue:IProductAxiosReject}>(
   `getOneProduct`,
-  async(id) => {
+  async(id:number):Promise<any> => {
     try {
       const response = await axios.get(
         `https://rickandmortyapi.com/api/character/${id}`
          );
       return response.data;
-      } catch (error) {
-        return error;
+      } catch (error: unknown) {
+        if(error instanceof Error)
+            return error.message;
     }
   }
 );
-export const searchByName = createAsyncThunk(
+export const searchByName = createAsyncThunk<IProduct[], string, { rejectValue:IProductAxiosReject}>(
     'searchProducts',
-    async (name) => {
+    async (name):Promise<any> => {
         try {
-            const response = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}`);
-            return response.data.results;
+            const response: AxiosXHR<IProductAxios> = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}`);
+            const data: IProduct[] = response.data.results;
+            return data;
         } catch (error ) {
             return error;
         }

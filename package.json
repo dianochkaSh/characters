@@ -3,7 +3,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.2",
@@ -31,6 +32,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
+    "gh-pages": "^6.3.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   }

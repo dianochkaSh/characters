@@ -7,40 +7,41 @@ import { IGenderConst } from '@/store/products/products.types';
 import { productSchema } from "@/schema";
 import MainLayout from "@/layouts/MainLayout";
 import {useRouter} from "next/router";
+interface IError {
+  [key: string]: string[]
+}
 
 const CreateProject:React. FC = () => {
   const router = useRouter();
   const { addProduct } = useSelector(stateProducts);
-  const [errors, setErrors] = useState<{ [key: string]: string[] } | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const dispatch = useDispatch();
+  const [errors, setErrors] = useState<IError | null>(null);
+  const dispatch = useDispatch<any>();
 
   const  handlerCheckValidation = async (formData: FormData) =>{
     const parsedData = productSchema.safeParse(Object.fromEntries(formData));
 
     if (!parsedData.success) {
-      const errors = parsedData.error.flatten().fieldErrors;
+      const errors: IError = parsedData.error.flatten().fieldErrors;
       return { success: false, errors };
     }
-
-    const { name, species, image } = parsedData.data;
-    return { success: true, message: "Form submitted successfully!" };
   }
-  const handlerSubmitForm  = async (event: React.FormEvent<HTMLFormElement>) => {
+  const generateTimestampId = (): number => {
+    return Date.now();
+  }
+  const handlerSubmitForm  = async () => {
     //event.preventDefault();
 
-    let id = Math.floor(Math.random() * 900) + 100;
+    let id = generateTimestampId();
     const formData = new FormData()
-    formData.append('id', id);
+    formData.append('id', id.toString());
     formData.append('name', addProduct.name);
     formData.append('species', addProduct.species);
     formData.append('gender', addProduct.gender);
     formData.append('image', addProduct.image);
-    const result = await handlerCheckValidation(formData);
+    const result  = await handlerCheckValidation(formData);
 
-    if (!result.success) {
+    if (result !== undefined && !result.success) {
       setErrors(result.errors);
-      setMessage(null);
     } else {
       setErrors(null);
       dispatch(productAction.addProduct(addProduct));
@@ -68,7 +69,7 @@ const CreateProject:React. FC = () => {
     <MainLayout>
     <div className="px-4 ">
       <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4 px-4">Create new character</h2>
-      <Form action={(e) => handlerSubmitForm(e)}>
+      <Form action={() => handlerSubmitForm()}>
 
         <div className="mb-4">
           <label htmlFor="Name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>

@@ -1,13 +1,11 @@
 import React, {useCallback, useState} from "react";
-import {useDebounce} from "use-debounce";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { debounce } from "next/dist/server/utils";
-import { stateProducts }  from "@/store/products/product.slice";
 import { searchByName } from "@/store/products/product.actions";
 
 const SearchComponent = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const handlerValue = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
         debouncedFetchResults(searchTerm);

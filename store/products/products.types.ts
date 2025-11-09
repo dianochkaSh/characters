@@ -1,7 +1,7 @@
 export interface IProduct {
   id: number,
   name: string,
-  image?: string,
+  image: string,
   location?: ILocation,
   species: string,
   gender: string,

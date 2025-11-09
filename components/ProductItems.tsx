@@ -25,7 +25,6 @@ const ProductItems:React.FC<Props> = ({ key, productItem }) => {
   const isFavorite:boolean = favoriteProducts.some(p=>p.id === productItem.id);
   return (
       <div className="w-full sm:w-1/2 md:w-1/3 p-4">
-          {/*<div className=" w-full sm:w-1/2 md:w-1/2 border border-gray-300 rounded-lg p-2 shadow-md">*/}
           <div className="bg-white rounded-lg shadow-md h-full flex flex-col">
               <div className="p-4 flex">
                   <button onClick={() => handlerDeleteItem(productItem.id)}
@@ -79,7 +78,7 @@ const ProductItems:React.FC<Props> = ({ key, productItem }) => {
 
                       }
                   </button>
-                  <Link className="p-4 ml-auto " href={`/products/${productItem.id}/edit`}>
+                  <Link className="p-4 ml-auto " href={`/products/edit-project?id=${productItem.id}`} >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" className="w-5 h-5 text-gray-500 hover:text-gray-700 cursor-pointer">
                           <path stroke-linecap="round" stroke-linejoin="round"
@@ -87,10 +86,9 @@ const ProductItems:React.FC<Props> = ({ key, productItem }) => {
                       </svg>
                   </Link>
               </div>
-              <Link href={`/products/${productItem.id}`} className="flex flex-row p-4">
+              <Link href={`/products/oneProduct?id=${productItem.id}`}  className="flex flex-row p-4">
                   <div>
                       <Image src={productItem.image} width={150} height={150} alt={productItem.name}/>
-                      {/*<img className="size-48 shadow-xl rounded-md" src={productItem.image} alt='' width={150} height={150}/>*/}
                   </div>
                   <div className="flex flex-col p-4">
                       <span className="text-2xl font-medium">{productItem.name}</span>

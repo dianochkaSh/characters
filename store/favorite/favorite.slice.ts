@@ -1,8 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {TypeRootState} from "@/store/store";
 import {IProduct} from "@/store/products/products.types";
+interface IInitialState {
+    favoriteProducts: IProduct[]
+}
 
- const initialState = {
+ const initialState:IInitialState = {
      favoriteProducts: []
  }
 export const favoriteSlice = createSlice ({
