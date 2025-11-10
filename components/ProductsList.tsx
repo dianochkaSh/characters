@@ -9,7 +9,7 @@ import SearchComponent from "@/components/SearchComponent";
 
 const ProductsList = () => {
   const dispatch = useDispatch<any>()
-  const { products , isLoading, hasError}  = useSelector(stateProducts);
+  const { products , isLoading, hasError, textError}  = useSelector(stateProducts);
 
     useEffect(() => {
       if (products.length == 0) {
@@ -23,10 +23,10 @@ const ProductsList = () => {
       { isLoading ?  (
             "Loading..."
       ) : hasError ? (
-        <div> {hasError} </div>
+        <div className="text-red-600"> {textError} </div>
       ) : (
         <div className="flex flex-wrap justify-around">
-          {products?.map((product: IProduct) => (
+          {products && products.length > 0 && products?.map((product: IProduct) => (
             <ProductItems key={product.id} productItem={product}/>
           ))};
         </div>

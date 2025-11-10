@@ -7,6 +7,7 @@ interface  IInitialState {
     products: IProduct[],
     isLoading: boolean,
     hasError: boolean,
+    textError: string | undefined,
     oneProduct: IProduct,
     addProduct: IProduct
 }
@@ -18,6 +19,7 @@ const InitialState:IInitialState =  {
   products: [],
   isLoading: false,
   hasError: false,
+  textError: '',
   oneProduct: {
     id: 0,
     name: 'string',
@@ -45,16 +47,19 @@ export const productSlice = createSlice({
       .addCase (getProducts.pending, (state, action) => {
         state.isLoading = true;
         state.hasError = false;
+        state.textError = '';
       })
     .addCase(getProducts.fulfilled, (state, action) => {
        state.products = action.payload;
        state.isLoading = false;
        state.hasError = false;
 
+
     })
     .addCase(getProducts.rejected, (state, action) => {
       state.isLoading = false;
       state.hasError = true;
+
     })
     .addCase(getProductById.pending, (state, action) => {
         state.isLoading = true;
@@ -75,11 +80,13 @@ export const productSlice = createSlice({
     .addCase(searchByName.fulfilled, (state, action) => {
       state.isLoading = false;
       state.hasError = false;
-      state.products = action.payload
+      state.products = action.payload;
+      state.textError = '';
     })
     .addCase(searchByName.rejected, (state, action) => {
       state.hasError = true;
-      state.isLoading = false
+      state.isLoading = false;
+      state.textError = action.payload?.message;
     })
   },
   reducers: {
